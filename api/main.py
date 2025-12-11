@@ -1,15 +1,21 @@
 import joblib
 import pandas as pd
 import numpy as np
+import os
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "..", "data", "adult.csv")
+MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
+
 app = FastAPI()
 
-model = joblib.load("model.pkl")
+model = joblib.load(MODEL_PATH)
 
-df_dirty = pd.read_csv("../data/adult.csv")
+df_dirty = pd.read_csv(DATA_PATH)
 df_dirty = df_dirty.rename(columns={"marital-status": "marital_status"})
 df = df_dirty.replace('?', np.nan).dropna()
 
