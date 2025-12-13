@@ -17,12 +17,10 @@ df = df_dirty.replace('?', np.nan).dropna()
 y = (df['>50K,<=50K'] == '>50K').astype(int)
 X = df.drop(columns=['>50K,<=50K'])
 
-num_features = X.select_dtypes(include=['int64', 'float64']).columns
 cat_features = X.select_dtypes(include=['object']).columns
 
 preprocess = ColumnTransformer(
     transformers=[
-        ('num', StandardScaler(), num_features),
         ('cat', OneHotEncoder(handle_unknown='ignore'), cat_features)
     ]
 )
@@ -31,7 +29,7 @@ model = GradientBoostingClassifier(
     n_estimators=300,
     criterion='squared_error',
     max_features='log2',
-    random_state=42
+    random_state=20251210
 )
 
 pipeline = Pipeline([
